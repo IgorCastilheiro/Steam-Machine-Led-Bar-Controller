@@ -1,5 +1,7 @@
 # Steam Machine LED Bar Controller
 
+<img width="1275" height="711" alt="Screenshot_20260824_190645" src="https://github.com/user-attachments/assets/b8fb08c1-9bab-4c9b-87cc-77c84a3d4f79" />
+
 An Electron desktop application to control the LED bar on the Steam Machine.
 Controls the 17 valve-leds via `/sys/class/leds/valve-leds[*]`.
 
