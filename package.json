@@ -8,17 +8,17 @@
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder --linux tar.gz"
+    "dist": "electron-builder --linux "
   },
   "devDependencies": {
-    "electron": "^32.0.0",
-    "electron-builder": "^25.0.0"
+    "electron": "^43.4.1",
+    "electron-builder": "^26.15.3"
   },
   "build": {
     "appId": "com.igorcastilheiro.steam-led-controller",
     "productName": "Steam LED Controller",
     "linux": {
-      "target": "tar.gz",
+      "target": "AppImage",
       "category": "Utility"
     },
     "files": [
@@ -29,5 +29,8 @@
       "renderer.js",
       "styles.css"
     ]
+  },
+  "allowScripts": {
+    "electron-winstaller@5.4.0": true
   }
 }

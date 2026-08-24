@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  Steam Machine LED Bar Controller - UI
+  Steam Machine LED Bar Controller - UI Redesign
   @author Igor Castilheiro
   @year 2026
 -->
@@ -12,97 +12,159 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Status bar -->
-    <div id="status-bar" class="status-bar">Detecting LEDs...</div>
+    <!-- Master Viewport Grid Shell Container -->
+    <div class="app-container">
+        
+        <!-- Left Side Panel Navigation Dock -->
+        <aside class="sidebar">
+            <div class="brand-header">
+                <h2>Steam Machine</h2>
+                <span class="sub-brand">LED Controller</span>
+            </div>
 
-    <!-- Tabs -->
-    <div class="tab-bar">
-        <button class="tab-btn active" data-tab="control">Control</button>
-        <button class="tab-btn" data-tab="profiles">Profiles</button>
+            <!-- Vertical Application Tabs Menu -->
+            <nav class="tab-bar">
+                <button class="tab-btn active" data-tab="control">
+                    <span class="icon">🎛️</span> Control Panel
+                </button>
+                <button class="tab-btn" data-tab="profiles">
+                    <span class="icon">📁</span> Saved Profiles
+                </button>
+            </nav>
+
+            <!-- Bottom Anchored Operational Status Badges -->
+            <div class="sidebar-footer">
+                <div id="status-bar" class="status-bar">Detecting LEDs...</div>
+                <button id="btn-turn-off" class="btn-danger full-width">Turn Off</button>
+            </div>
+        </aside>
+
+        <!-- Right Side Primary Main Interactive Canvas Viewport -->
+        <main class="main-canvas">
+
+            <!-- Active Operational Controller Panel Workspace -->
+            <div id="tab-control" class="tab-content active">
+                <div class="grid-layout">
+                    
+                    <!-- Left Flex Column Card Container: Hardware Colors -->
+                    <section class="control-card">
+                        <h3>Color Settings</h3>
+                        
+                        <!-- Block Unit 1: Solid Base Custom Pickers -->
+                        <div class="picker-group">
+                            <label class="group-title">Solid Color Customization</label>
+                            <div class="row items-center gap-md">
+                                <div class="color-picker-wrapper">
+                                    <input type="color" id="all-color" value="#ff0000">
+                                </div>
+                                <button id="btn-apply-color" class="btn-primary flex-grow">Apply Solid Color</button>
+                            </div>
+                        </div>
+
+                        <!-- Block Unit 2: Static Presets Matrix Grids -->
+                        <div class="swatch-group">
+                            <label class="group-title">Hardware Color Presets</label>
+                            <div class="swatch-grid">
+                                <button class="color-btn" data-r="255" data-g="0" data-b="0" style="--swatch-color: #ff0000;" title="Red"></button>
+                                <button class="color-btn" data-r="0" data-g="255" data-b="0" style="--swatch-color: #00ff00;" title="Green"></button>
+                                <button class="color-btn" data-r="0" data-g="0" data-b="255" style="--swatch-color: #0000ff;" title="Blue"></button>
+                                <button class="color-btn" data-r="255" data-g="255" data-b="255" style="--swatch-color: #ffffff;" title="White"></button>
+                                <button class="color-btn" data-r="128" data-g="0" data-b="255" style="--swatch-color: #8000ff;" title="Purple"></button>
+                                <button class="color-btn" data-r="0" data-g="255" data-b="255" style="--swatch-color: #00ffff;" title="Cyan"></button>
+                                <button class="color-btn" data-r="255" data-g="128" data-b="0" style="--swatch-color: #ff8000;" title="Orange"></button>
+                                <button id="btn-manual-rainbow" class="btn-secondary">Manual Rainbow</button>
+                            </div>
+                        </div>
+
+                        <!-- Block Unit 3: Linked Flow Direct Gradient Controllers -->
+                        <div class="gradient-group">
+                            <label class="group-title">Dynamic Gradient Interpolation</label>
+                            <div class="gradient-bar-row">
+                                <div class="color-picker-wrapper">
+                                    <input type="color" id="gradient-end" value="#ff0000">
+                                </div>
+                                <span class="arrow">➔</span>
+                                <div class="color-picker-wrapper">
+                                    <input type="color" id="gradient-start" value="#0000ff">
+                                </div>
+                                <button id="btn-apply-gradient" class="btn-secondary">Gradient</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Right Flex Column Card Container: Hardware Animations & Limits -->
+                    <section class="control-card">
+                        <h3>Effects & Performance</h3>
+                        
+                        <!-- Block Unit 1: System Light Mode Selectors Grid -->
+                        <div class="effects-group">
+                            <label class="group-title">Lighting Animations</label>
+                            <div class="effects-grid">
+                                <button class="effect-btn" data-effect="rainbow">Rainbow</button>
+                                <button class="effect-btn" data-effect="breath">Breath</button>
+                                <button class="effect-btn" data-effect="patrol">Patrol</button>
+                                <button class="effect-btn" data-effect="normal">Normal</button>
+                                <button class="effect-btn" data-effect="demo">Demo</button>
+                            </div>
+                        </div>
+
+                        <!-- Block Unit 2: Custom Fine Tuning Input Sliders Matrix -->
+                        <div class="sliders-group">
+                            <label class="group-title">Fine-Tuning Parameters</label>
+                            
+                            <!-- Range Block 1: Brightness Configurations -->
+                            <div class="slider-block">
+                                <div class="slider-header">
+                                    <label for="all-brightness">Brightness</label>
+                                    <span id="all-brightness-val" class="value-badge">255</span>
+                                </div>
+                                <input type="range" id="all-brightness" min="0" max="255" value="255" class="custom-range">
+                            </div>
+
+                            <!-- Range Block 2: Inverted Delay Hardware Running Speed Settings -->
+                            <div class="slider-block">
+                                <div class="slider-header">
+                                    <label for="all-speed">Speed</label>
+                                    <span id="all-speed-val" class="value-badge">10</span>
+                                </div>
+                                <input type="range" id="all-speed" min="0" max="20" value="10" class="custom-range">
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+
+            <!-- Profile File Canvas Manager Directory Section Workspace -->
+            <div id="tab-profiles" class="tab-content">
+                <div class="profile-layout max-width-md">
+                    <section class="control-card">
+                        <h3>Saved Configuration Profiles</h3>
+                        
+                        <!-- Top Input Insertion Controls Panel -->
+                        <div class="profile-input-row">
+                            <input type="text" id="profile-name" placeholder="Profile name...">
+                            <button id="btn-save-profile" class="btn-primary">Save</button>
+                        </div>
+
+                        <!-- Main Directory Target Output Window -->
+                        <div id="profiles-list" class="profiles-list"></div>
+
+                        <!-- Bottom Structural Active Load/Execution Action Modifiers -->
+                        <div class="profile-actions-footer">
+                            <button id="btn-load-profile" class="btn-secondary flex-grow">Load</button>
+                            <button id="btn-delete-profile" class="btn-danger flex-grow">Delete</button>
+                        </div>
+
+                        <p id="profile-status" class="status-text"></p>
+                    </section>
+                </div>
+            </div>
+
+        </main>
     </div>
 
-    <!-- Tab: Control -->
-    <div id="tab-control" class="tab-content active">
-        <div class="section">
-
-            <!-- Color -->
-            <h3>Color</h3>
-            <div class="row center">
-                <input type="color" id="all-color" value="#ff0000">
-                <button id="btn-apply-color" class="btn-primary">Apply Solid Color</button>
-            </div>
-
-            <div class="row center wrap">
-                <button class="color-btn" data-r="255" data-g="0" data-b="0">Red</button>
-                <button class="color-btn" data-r="0" data-g="255" data-b="0">Green</button>
-                <button class="color-btn" data-r="0" data-g="0" data-b="255">Blue</button>
-                <button class="color-btn" data-r="255" data-g="255" data-b="255">White</button>
-                <button class="color-btn" data-r="128" data-g="0" data-b="255">Purple</button>
-                <button class="color-btn" data-r="0" data-g="255" data-b="255">Cyan</button>
-                <button class="color-btn" data-r="255" data-g="128" data-b="0">Orange</button>
-                <button id="btn-manual-rainbow">Manual Rainbow</button>
-            </div>
-
-
-            <!-- Gradient -->
-            <div class="row center">
-                <input type="color" id="gradient-start" value="#ff0000">
-                <span class="arrow">&#10132;</span>
-                <input type="color" id="gradient-end" value="#0000ff">
-                <button id="btn-apply-gradient">Gradient</button>
-            </div>
-
-            <!-- Effects -->
-            <h3>Effects</h3>
-            <div class="row center wrap">
-                <button class="effect-btn" data-effect="rainbow">Rainbow</button>
-                <button class="effect-btn" data-effect="breath">Breath</button>
-                <button class="effect-btn" data-effect="patrol">Patrol</button>
-                <button class="effect-btn" data-effect="normal">Normal</button>
-                <button class="effect-btn" data-effect="demo">Demo</button>
-            </div>
-
-            <!-- Brightness -->
-            <div class="slider-row">
-                <label>Brightness</label>
-                <input type="range" id="all-brightness" min="0" max="255" value="255">
-                <span id="all-brightness-val">255</span>
-            </div>
-
-            <!-- Speed (delay inverted: 20=slow, 0=fast) -->
-            <div class="slider-row">
-                <label>Speed</label>
-                <input type="range" id="all-speed" min="0" max="20" value="10">
-                <span id="all-speed-val">10</span>
-            </div>
-
-
-            <!-- Turn off -->
-            <button id="btn-turn-off" class="btn-danger full-width">Turn Off</button>
-        </div>
-    </div>
-
-    <!-- Tab: Profiles -->
-    <div id="tab-profiles" class="tab-content">
-        <div class="section">
-            <h3>Saved Profiles</h3>
-
-            <div class="row">
-                <input type="text" id="profile-name" placeholder="Profile name...">
-                <button id="btn-save-profile" class="btn-primary">Save</button>
-            </div>
-
-            <div id="profiles-list" class="profiles-list"></div>
-
-            <div class="row center">
-                <button id="btn-load-profile">Load</button>
-                <button id="btn-delete-profile" class="btn-danger">Delete</button>
-            </div>
-
-            <p id="profile-status" class="status-text"></p>
-        </div>
-    </div>
-
+    <!-- Main Electron Render Controller Script Bundle Linkage -->
     <script src="renderer.js"></script>
 </body>
 </html>

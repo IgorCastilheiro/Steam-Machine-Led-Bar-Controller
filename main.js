@@ -15,9 +15,8 @@ const controller = new LedBarController();
 
 function createWindow() {
     mainWindow = new BrowserWindow({
-        width: 500,
-        height: 525,
-        resizable: false,
+        width: 1280,
+        height: 720,
         title: 'Steam LED Bar Controller',
         webPreferences: {
             nodeIntegration: false,
