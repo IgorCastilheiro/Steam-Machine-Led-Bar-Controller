@@ -1,0 +1,5 @@
+# Udev rule to allow non-root users to control valve-leds
+# Install to /etc/udev/rules.d/99-valve-leds.rules
+# Then run: sudo udevadm control --reload-rules && sudo udevadm trigger
+
+SUBSYSTEM=="leds", KERNEL=="valve-leds*", RUN+="/bin/chmod 0666 /sys/class/leds/%k/brightness /sys/class/leds/%k/multi_intensity /sys/class/leds/%k/enabled /sys/class/leds/%k/breath_level /sys/class/leds/%k/brightness_scale /sys/class/leds/%k/effect /sys/class/leds/%k/breath_offset /sys/class/leds/%k/delay /sys/class/leds/%k/color_shift /sys/class/leds/%k/effect_index /sys/class/leds/%k/patrol_num"

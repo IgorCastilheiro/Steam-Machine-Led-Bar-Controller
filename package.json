@@ -1,0 +1,33 @@
+{
+  "name": "steam-led-controller",
+  "version": "1.0.0",
+  "description": "Control the LED bar on your Steam Machine",
+  "main": "main.js",
+  "author": "Igor Castilheiro",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --linux tar.gz"
+  },
+  "devDependencies": {
+    "electron": "^32.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "com.igorcastilheiro.steam-led-controller",
+    "productName": "Steam LED Controller",
+    "linux": {
+      "target": "tar.gz",
+      "category": "Utility"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "led-backend.js",
+      "index.html",
+      "renderer.js",
+      "styles.css"
+    ]
+  }
+}

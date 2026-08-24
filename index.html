@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!--
+  Steam Machine LED Bar Controller - UI
+  @author Igor Castilheiro
+  @year 2026
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam LED Bar Controller</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Status bar -->
+    <div id="status-bar" class="status-bar">Detecting LEDs...</div>
+
+    <!-- Tabs -->
+    <div class="tab-bar">
+        <button class="tab-btn active" data-tab="control">Control</button>
+        <button class="tab-btn" data-tab="profiles">Profiles</button>
+    </div>
+
+    <!-- Tab: Control -->
+    <div id="tab-control" class="tab-content active">
+        <div class="section">
+
+            <!-- Color -->
+            <h3>Color</h3>
+            <div class="row center">
+                <input type="color" id="all-color" value="#ff0000">
+                <button id="btn-apply-color" class="btn-primary">Apply Solid Color</button>
+            </div>
+
+            <div class="row center wrap">
+                <button class="color-btn" data-r="255" data-g="0" data-b="0">Red</button>
+                <button class="color-btn" data-r="0" data-g="255" data-b="0">Green</button>
+                <button class="color-btn" data-r="0" data-g="0" data-b="255">Blue</button>
+                <button class="color-btn" data-r="255" data-g="255" data-b="255">White</button>
+                <button class="color-btn" data-r="128" data-g="0" data-b="255">Purple</button>
+                <button class="color-btn" data-r="0" data-g="255" data-b="255">Cyan</button>
+                <button class="color-btn" data-r="255" data-g="128" data-b="0">Orange</button>
+                <button id="btn-manual-rainbow">Manual Rainbow</button>
+            </div>
+
+
+            <!-- Gradient -->
+            <div class="row center">
+                <input type="color" id="gradient-start" value="#ff0000">
+                <span class="arrow">&#10132;</span>
+                <input type="color" id="gradient-end" value="#0000ff">
+                <button id="btn-apply-gradient">Gradient</button>
+            </div>
+
+            <!-- Effects -->
+            <h3>Effects</h3>
+            <div class="row center wrap">
+                <button class="effect-btn" data-effect="rainbow">Rainbow</button>
+                <button class="effect-btn" data-effect="breath">Breath</button>
+                <button class="effect-btn" data-effect="patrol">Patrol</button>
+                <button class="effect-btn" data-effect="normal">Normal</button>
+                <button class="effect-btn" data-effect="demo">Demo</button>
+            </div>
+
+            <!-- Brightness -->
+            <div class="slider-row">
+                <label>Brightness</label>
+                <input type="range" id="all-brightness" min="0" max="255" value="255">
+                <span id="all-brightness-val">255</span>
+            </div>
+
+            <!-- Speed (delay inverted: 20=slow, 0=fast) -->
+            <div class="slider-row">
+                <label>Speed</label>
+                <input type="range" id="all-speed" min="0" max="20" value="10">
+                <span id="all-speed-val">10</span>
+            </div>
+
+
+            <!-- Turn off -->
+            <button id="btn-turn-off" class="btn-danger full-width">Turn Off</button>
+        </div>
+    </div>
+
+    <!-- Tab: Profiles -->
+    <div id="tab-profiles" class="tab-content">
+        <div class="section">
+            <h3>Saved Profiles</h3>
+
+            <div class="row">
+                <input type="text" id="profile-name" placeholder="Profile name...">
+                <button id="btn-save-profile" class="btn-primary">Save</button>
+            </div>
+
+            <div id="profiles-list" class="profiles-list"></div>
+
+            <div class="row center">
+                <button id="btn-load-profile">Load</button>
+                <button id="btn-delete-profile" class="btn-danger">Delete</button>
+            </div>
+
+            <p id="profile-status" class="status-text"></p>
+        </div>
+    </div>
+
+    <script src="renderer.js"></script>
+</body>
+</html>
