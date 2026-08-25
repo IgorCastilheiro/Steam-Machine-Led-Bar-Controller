@@ -44,6 +44,7 @@ jspm_packages/
 decode_project.sh
 project_base64.txt
 package-lock.json
+TODO.md
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/

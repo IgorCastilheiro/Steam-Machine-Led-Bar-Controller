@@ -50,6 +50,11 @@ ipcMain.handle('get-led-state', (_, index) => {
     return controller.leds[index].getState();
 });
 
+// Get all LED states at once
+ipcMain.handle('get-all-led-states', () => {
+    return controller.leds.map((led) => led.getState());
+});
+
 // Set effect on single LED
 ipcMain.handle('set-led-effect', (_, index, effect) => {
     return controller.leds[index].setEffect(effect);
@@ -134,16 +139,16 @@ ipcMain.handle('turn-off-all', () => {
 });
 
 // Presets
-ipcMain.handle('apply-rainbow', () => {
-    return controller.applyRainbow();
+ipcMain.handle('apply-rainbow', (_, brightness) => {
+    return controller.applyRainbow(brightness);
 });
 
-ipcMain.handle('apply-solid-color', (_, r, g, b) => {
-    return controller.applySolidColor(r, g, b);
+ipcMain.handle('apply-solid-color', (_, r, g, b, brightness) => {
+    return controller.applySolidColor(r, g, b, brightness);
 });
 
-ipcMain.handle('apply-gradient', (_, startColor, endColor) => {
-    return controller.applyGradient(startColor, endColor);
+ipcMain.handle('apply-gradient', (_, startColor, endColor, brightness) => {
+    return controller.applyGradient(startColor, endColor, brightness);
 });
 
 ipcMain.handle('apply-driver-effect', (_, effect) => {

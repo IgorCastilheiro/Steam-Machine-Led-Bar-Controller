@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initTabs();
     initControlTab();
     initProfilesTab();
+    initLedStatusStrip();
 });
 
 async function initStatusBar() {
@@ -83,6 +84,49 @@ function hexToRgb(hex) {
 }
 
 /**
+ * Returns the current brightness value from the slider.
+ */
+function getCurrentBrightness() {
+    return parseInt(document.getElementById('all-brightness').value, 10);
+}
+
+// Effects that support speed (delay) control
+const SPEED_EFFECTS = ['rainbow', 'breath', 'patrol', 'demo'];
+
+// Effects that allow individual LED color control
+const INDIVIDUAL_COLOR_EFFECTS = ['manual', 'breath'];
+
+// Effects that support brightness control
+const BRIGHTNESS_EFFECTS = ['rainbow', 'breath', 'patrol', 'demo', 'normal', 'manual'];
+
+/**
+ * Shows or hides the Color Settings card, Brightness and Speed sliders
+ * based on the active effect.
+ * Color Settings is only visible when "Solid" (manual) is selected.
+ * Brightness slider is only visible when the active effect supports it.
+ * Speed slider is only visible when the active effect supports delay control.
+ */
+function updateControlVisibility() {
+    const colorCard = document.getElementById('color-settings-card');
+    colorCard.style.display = activeEffect === 'manual' ? 'flex' : 'none';
+
+    const brightnessBlock = document.getElementById('brightness-slider-block');
+    brightnessBlock.style.display = BRIGHTNESS_EFFECTS.includes(activeEffect) ? 'flex' : 'none';
+
+    const speedBlock = document.getElementById('speed-slider-block');
+    speedBlock.style.display = SPEED_EFFECTS.includes(activeEffect) ? 'flex' : 'none';
+
+    // Toggle clickable state on LED indicators
+    const isClickable = INDIVIDUAL_COLOR_EFFECTS.includes(activeEffect);
+    for (let i = 0; i < LED_COUNT; i++) {
+        const dot = document.getElementById(`led-dot-${i}`);
+        if (dot) {
+            dot.classList.toggle('clickable', isClickable);
+        }
+    }
+}
+
+/**
  * Reverts the power toggle back to a red "Turn Off" look automatically
  * if the user interacts with colors, effects, or sliders.
  */
@@ -110,8 +154,13 @@ function initControlTab() {
             document.querySelectorAll('.effect-btn').forEach((b) => b.classList.remove('active'));
             btn.classList.add('active');
             activeEffect = btn.dataset.effect;
-            window.ledApi.applyDriverEffect(btn.dataset.effect);
+            updateControlVisibility();
             resetPowerButtonToOnState();
+            if (btn.dataset.effect === 'manual') {
+                window.ledApi.setAllManual();
+            } else {
+                window.ledApi.applyDriverEffect(btn.dataset.effect);
+            }
         });
     });
 
@@ -129,7 +178,7 @@ function initControlTab() {
     // Apply color picker
     document.getElementById('btn-apply-color').addEventListener('click', () => {
         const [r, g, b] = hexToRgb(document.getElementById('all-color').value);
-        window.ledApi.applySolidColor(r, g, b);
+        window.ledApi.applySolidColor(r, g, b, getCurrentBrightness());
         resetPowerButtonToOnState();
     });
 
@@ -139,14 +188,14 @@ function initControlTab() {
             const r = parseInt(btn.dataset.r, 10);
             const g = parseInt(btn.dataset.g, 10);
             const b = parseInt(btn.dataset.b, 10);
-            window.ledApi.applySolidColor(r, g, b);
+            window.ledApi.applySolidColor(r, g, b, getCurrentBrightness());
             resetPowerButtonToOnState();
         });
     });
 
     // Manual rainbow
     document.getElementById('btn-manual-rainbow').addEventListener('click', () => {
-        window.ledApi.applyRainbow();
+        window.ledApi.applyRainbow(getCurrentBrightness());
         resetPowerButtonToOnState();
     });
 
@@ -154,7 +203,7 @@ function initControlTab() {
     document.getElementById('btn-apply-gradient').addEventListener('click', () => {
         const start = hexToRgb(document.getElementById('gradient-start').value);
         const end = hexToRgb(document.getElementById('gradient-end').value);
-        window.ledApi.applyGradient(start, end);
+        window.ledApi.applyGradient(start, end, getCurrentBrightness());
         resetPowerButtonToOnState();
     });
 
@@ -174,7 +223,7 @@ function initControlTab() {
         } else {
             // Apply current color custom value to wake LEDs up
             const [r, g, b] = hexToRgb(document.getElementById('all-color').value);
-            window.ledApi.applySolidColor(r, g, b);
+            window.ledApi.applySolidColor(r, g, b, getCurrentBrightness());
 
             // Revert interface to Red "Turn Off" state
             this.textContent = 'Turn Off';
@@ -283,4 +332,86 @@ async function refreshProfilesList() {
 // Global scope status tracking definition helper 
 function setProfileStatus(text) {
     document.getElementById('profile-status').textContent = text;
+}
+
+// ---------------------------------------------------------------------------
+// LED Status Strip
+// ---------------------------------------------------------------------------
+
+let ledStatusInterval = null;
+
+/**
+ * Builds the 17 LED indicator elements and starts periodic refresh.
+ * Each LED has a hidden color input for individual color control.
+ */
+function initLedStatusStrip() {
+    const strip = document.getElementById('led-status-strip');
+    for (let i = 0; i < LED_COUNT; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'led-indicator inactive';
+        dot.id = `led-dot-${i}`;
+        dot.dataset.index = i;
+        dot.title = `LED ${i}`;
+
+        const label = document.createElement('span');
+        label.className = 'led-index';
+        label.textContent = i;
+        dot.appendChild(label);
+
+        // Hidden color picker for individual LED control
+        const picker = document.createElement('input');
+        picker.type = 'color';
+        picker.className = 'led-color-picker';
+        picker.id = `led-picker-${i}`;
+        picker.value = '#ff0000';
+        picker.addEventListener('input', () => {
+            const [r, g, b] = hexToRgb(picker.value);
+            window.ledApi.setLedColor(i, r, g, b);
+        });
+        dot.appendChild(picker);
+
+        // Click to open color picker only in allowed effects
+        dot.addEventListener('click', () => {
+            if (INDIVIDUAL_COLOR_EFFECTS.includes(activeEffect)) {
+                picker.click();
+            }
+        });
+
+        strip.appendChild(dot);
+    }
+
+    refreshLedStatus();
+    ledStatusInterval = setInterval(refreshLedStatus, 20);
+}
+
+/**
+ * Reads the current state of all 17 LEDs and updates the strip indicators.
+ */
+async function refreshLedStatus() {
+    try {
+        const states = await window.ledApi.getAllLedStates();
+        for (const state of states) {
+            const dot = document.getElementById(`led-dot-${state.index}`);
+            if (!dot) continue;
+
+            const [r, g, b] = state.color;
+            const color = `rgb(${r}, ${g}, ${b})`;
+
+            if (state.enabled && state.effect !== 'off') {
+                dot.style.backgroundColor = color;
+                dot.style.setProperty('--led-color', color);
+                dot.classList.add('active');
+                dot.classList.remove('inactive');
+            } else {
+                dot.style.backgroundColor = '#333';
+                dot.style.removeProperty('--led-color');
+                dot.classList.remove('active');
+                dot.classList.add('inactive');
+            }
+
+            dot.title = `LED ${state.index} | ${state.enabled ? 'ON' : 'OFF'} | rgb(${r},${g},${b}) | ${state.effect}`;
+        }
+    } catch (e) {
+        console.error('Failed to refresh LED status:', e);
+    }
 }

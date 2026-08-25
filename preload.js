@@ -14,6 +14,7 @@ contextBridge.exposeInMainWorld('ledApi', {
 
     // Single LED
     getLedState: (index) => ipcRenderer.invoke('get-led-state', index),
+    getAllLedStates: () => ipcRenderer.invoke('get-all-led-states'),
     setLedEffect: (index, effect) => ipcRenderer.invoke('set-led-effect', index, effect),
     setLedEnabled: (index, enabled) => ipcRenderer.invoke('set-led-enabled', index, enabled),
     setLedBrightness: (index, value) => ipcRenderer.invoke('set-led-brightness', index, value),
@@ -36,9 +37,9 @@ contextBridge.exposeInMainWorld('ledApi', {
     turnOffAll: () => ipcRenderer.invoke('turn-off-all'),
 
     // Presets
-    applyRainbow: () => ipcRenderer.invoke('apply-rainbow'),
-    applySolidColor: (r, g, b) => ipcRenderer.invoke('apply-solid-color', r, g, b),
-    applyGradient: (startColor, endColor) => ipcRenderer.invoke('apply-gradient', startColor, endColor),
+    applyRainbow: (brightness) => ipcRenderer.invoke('apply-rainbow', brightness),
+    applySolidColor: (r, g, b, brightness) => ipcRenderer.invoke('apply-solid-color', r, g, b, brightness),
+    applyGradient: (startColor, endColor, brightness) => ipcRenderer.invoke('apply-gradient', startColor, endColor, brightness),
     applyDriverEffect: (effect) => ipcRenderer.invoke('apply-driver-effect', effect),
 
     // Profiles

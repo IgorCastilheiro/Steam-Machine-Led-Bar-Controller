@@ -1,6 +1,6 @@
 {
   "name": "steam-led-controller",
-  "version": "1.0.0",
+  "version": "0.0.2-Alpha-2",
   "description": "Control the LED bar on your Steam Machine",
   "main": "main.js",
   "author": "Igor Castilheiro",

@@ -135,9 +135,7 @@ body {
     color: var(--text-muted);
     border-radius: 6px;
     font-family: monospace;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+        word-wrap: break-word;
 }
 
 /* Right Main Canvas Layout */
@@ -232,13 +230,14 @@ body {
 /* Unified Presets Swatches Blocks */
 .swatch-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 6px;
 }
 
 .color-btn {
     aspect-ratio: 1;
     min-width: 0;
+    max-height: 32px;
     /* Clear previous min-width override for pure grid alignment */
     background-color: var(--swatch-color);
     border-radius: 6px;
@@ -258,7 +257,7 @@ body {
 
 /* Shift Manual Rainbow below the primary grid nodes matrix */
 #btn-manual-rainbow {
-    grid-column: span 4;
+    grid-column: span 8;
     margin-top: 4px;
     font-size: 12px;
 }
@@ -306,6 +305,63 @@ body {
 
 .effect-btn:hover {
     background-color: var(--border-color);
+}
+
+/* Effect Button Wrapper with Info Icon */
+.effect-btn-wrapper {
+    position: relative;
+}
+
+.effect-btn-wrapper .effect-btn {
+    width: 100%;
+}
+
+.info-icon {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: rgba(74, 158, 255, 0.2);
+    color: var(--accent-blue);
+    font-size: 10px;
+    font-weight: 700;
+    font-style: italic;
+    font-family: serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: help;
+    user-select: none;
+    z-index: 3;
+    transition: background-color 0.15s ease;
+}
+
+.info-icon:hover {
+    background-color: rgba(74, 158, 255, 0.4);
+}
+
+.info-icon:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    right: 0;
+    width: 220px;
+    padding: 8px 10px;
+    background-color: #1b2028;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 11px;
+    font-weight: 400;
+    font-style: normal;
+    font-family: var(--font-stack);
+    line-height: 1.5;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    pointer-events: none;
+    z-index: 10;
+    white-space: normal;
 }
 
 .effect-btn.active {
@@ -561,6 +617,73 @@ input[type="text"]::placeholder {
 
 ::-webkit-scrollbar-thumb:hover {
     background: #4b586e;
+}
+
+/* LED Status Strip Visualization */
+.led-status-section {
+    margin-top: 24px;
+}
+
+.led-strip {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 8px;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.led-indicator {
+    width: 100%;
+    max-width: 36px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+}
+
+.led-indicator.active {
+    box-shadow: 0 0 10px var(--led-color), 0 0 20px var(--led-color);
+}
+
+.led-indicator.inactive {
+    opacity: 0.25;
+    filter: grayscale(0.6);
+}
+
+.led-indicator .led-index {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 9px;
+    font-weight: 700;
+    font-family: monospace;
+    color: rgba(255, 255, 255, 0.7);
+    pointer-events: none;
+    user-select: none;
+}
+
+.led-indicator.clickable {
+    cursor: pointer;
+    border-color: rgba(74, 158, 255, 0.3);
+}
+
+.led-indicator.clickable:hover {
+    transform: scale(1.15);
+    border-color: var(--accent-blue);
+    z-index: 2;
+}
+
+.led-color-picker {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* Utility Helpers positioning declarations */

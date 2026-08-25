@@ -47,7 +47,7 @@
                 <div class="grid-layout">
                     
                     <!-- Left Flex Column Card Container: Hardware Colors -->
-                    <section class="control-card">
+                    <section id="color-settings-card" class="control-card" style="display: none;">
                         <h3>Color Settings</h3>
                         
                         <!-- Block Unit 1: Solid Base Custom Pickers -->
@@ -72,6 +72,15 @@
                                 <button class="color-btn" data-r="128" data-g="0" data-b="255" style="--swatch-color: #8000ff;" title="Purple"></button>
                                 <button class="color-btn" data-r="0" data-g="255" data-b="255" style="--swatch-color: #00ffff;" title="Cyan"></button>
                                 <button class="color-btn" data-r="255" data-g="128" data-b="0" style="--swatch-color: #ff8000;" title="Orange"></button>
+                                <button class="color-btn" data-r="255" data-g="255" data-b="0" style="--swatch-color: #ffff00;" title="Yellow"></button>
+                                <button class="color-btn" data-r="255" data-g="0" data-b="128" style="--swatch-color: #ff0080;" title="Pink"></button>
+                                <button class="color-btn" data-r="255" data-g="0" data-b="255" style="--swatch-color: #ff00ff;" title="Magenta"></button>
+                                <button class="color-btn" data-r="0" data-g="255" data-b="128" style="--swatch-color: #00ff80;" title="Mint"></button>
+                                <button class="color-btn" data-r="0" data-g="128" data-b="255" style="--swatch-color: #0080ff;" title="Sky Blue"></button>
+                                <button class="color-btn" data-r="128" data-g="255" data-b="0" style="--swatch-color: #80ff00;" title="Lime"></button>
+                                <button class="color-btn" data-r="255" data-g="192" data-b="0" style="--swatch-color: #ffc000;" title="Amber"></button>
+                                <button class="color-btn" data-r="64" data-g="0" data-b="128" style="--swatch-color: #400080;" title="Indigo"></button>
+                                <button class="color-btn" data-r="0" data-g="128" data-b="128" style="--swatch-color: #008080;" title="Teal"></button>
                                 <button id="btn-manual-rainbow" class="btn-secondary">Manual Rainbow</button>
                             </div>
                         </div>
@@ -103,8 +112,12 @@
                                 <button class="effect-btn" data-effect="rainbow">Rainbow</button>
                                 <button class="effect-btn" data-effect="breath">Breath</button>
                                 <button class="effect-btn" data-effect="patrol">Patrol</button>
-                                <button class="effect-btn" data-effect="normal">Normal</button>
                                 <button class="effect-btn" data-effect="demo">Demo</button>
+                                <button class="effect-btn" data-effect="manual">Solid</button>
+                                <div class="effect-btn-wrapper">
+                                    <button class="effect-btn" data-effect="normal">Reset</button>
+                                    <span class="info-icon" data-tooltip="Restores the default firmware lighting mode controlled by the hardware driver.">i</span>
+                                </div>
                             </div>
                         </div>
 
@@ -113,7 +126,7 @@
                             <label class="group-title">Fine-Tuning Parameters</label>
                             
                             <!-- Range Block 1: Brightness Configurations -->
-                            <div class="slider-block">
+                            <div id="brightness-slider-block" class="slider-block" style="display: none;">
                                 <div class="slider-header">
                                     <label for="all-brightness">Brightness</label>
                                     <span id="all-brightness-val" class="value-badge">255</span>
@@ -122,7 +135,7 @@
                             </div>
 
                             <!-- Range Block 2: Inverted Delay Hardware Running Speed Settings -->
-                            <div class="slider-block">
+                            <div id="speed-slider-block" class="slider-block" style="display: none;">
                                 <div class="slider-header">
                                     <label for="all-speed">Speed</label>
                                     <span id="all-speed-val" class="value-badge">10</span>
@@ -133,6 +146,13 @@
                     </section>
 
                 </div>
+
+                <!-- LED Status Strip: Real-time Hardware State Visualization -->
+                <section class="control-card led-status-section">
+                    <h3>LED Status</h3>
+                    <div id="led-status-strip" class="led-strip"></div>
+                </section>
+
             </div>
 
             <!-- Profile File Canvas Manager Directory Section Workspace -->
