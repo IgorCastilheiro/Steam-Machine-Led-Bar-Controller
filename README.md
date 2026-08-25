@@ -1,6 +1,6 @@
 # Steam Machine LED Bar Controller
 
-<img width="1275" height="711" alt="Screenshot_20260824_190645" src="https://github.com/user-attachments/assets/b8fb08c1-9bab-4c9b-87cc-77c84a3d4f79" />
+<img width="1282" height="724" alt="image" src="https://github.com/user-attachments/assets/53d8da53-eb33-4cf3-9be1-d6a1e9ca1218" />
 <img width="480" height="848" alt="SteamMachine2" src="https://github.com/user-attachments/assets/0d2a8ec1-6971-4f54-ba80-c920ef8da6da" />
 <img width="480" height="848" alt="SteamMachine" src="https://github.com/user-attachments/assets/84da5667-47ce-4952-a529-f09ec5267099" />
 
@@ -28,7 +28,7 @@ Controls the 17 valve-leds via `/sys/class/leds/valve-leds[*]`.
 - Node.js 18+ (only for building, not needed to run the built app)
 
 
-## Installation
+## Building your self
 
 ### 1. Install udev rules (one-time, requires sudo)
 
